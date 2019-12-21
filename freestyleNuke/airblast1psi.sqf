@@ -1,9 +1,9 @@
-
+//Changed in 0.2.0
 
 
 private ["_blastPos","_radius1", "_rad5psi","_allBuildings", "_allTrees", "_allVehicles", "_allUnits"];
 private ["_curRadius1", "_h", "_curDamage1", "_abort"];
-//Change in 0.1.1
+//Changed in 0.1.1
 
 //hint str "Airblast 1 psi";
 
@@ -27,9 +27,9 @@ _abort = false;
 
 //_allTrees = nearestTerrainObjects [_blastPos, ["SMALL TREE", "BUSH"], _radius1];
 //_allBuildings = nearestTerrainObjects [_blastPos, [], _curRadius1];
-_allBuildings = _blastPos nearObjects ["Building", _radius1];
-_allVehicles = _blastPos nearObjects ["AllVehicles", _radius1];
-_allUnits = _blastPos nearObjects ["Man", _radius1];
+_allBuildings = nearestObjects [_blastPos ,["Building"], _radius1];
+_allVehicles = nearestObjects [_blastPos ,["LandVehicles", "Air", "Ship"], _radius1];
+_allUnits = nearestObjects [_blastPos ,["Man"], _radius1];
 
 while{_curRadius1 <= _radius1} do {
 
@@ -58,7 +58,7 @@ if (_h >= (_curRadius1 - 40) && _h <= _curRadius1) then {_x setDamage[_curDamage
 
 { 
 _h = (getPos _x) distance _blastPos; 
-if (_h >= (_curRadius1 - 40) && _h <= _curRadius1) then {_x setDamage[_curDamage1 + damage _x, true]; };
+if (_h >= (_curRadius1 - 40) && _h <= _curRadius1 && isDamageAllowed _x) then {_x setDamage[_curDamage1 + damage _x, true]; };
 } forEach _allUnits;
 
 

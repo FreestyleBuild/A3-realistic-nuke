@@ -1,3 +1,4 @@
+//Changed in 0.2.0
 
 private["_ring", "_pos", "_obj","_radius", "_heigth"];
 
@@ -8,9 +9,7 @@ _heigth = _this select 1;
 _radius = _this select 2;
 
 _obj = "Sign_Sphere10cm_F" createVehicleLocal [_pos select 0, _pos select 1, (_pos select 2) + _heigth];
-_brigthness = 100050;
 
-_vSpeed = 20;
 
 if (isServer) then {_obj setPos [getPos _obj select 0,getPos _obj select 1,(_pos select 2) + _heigth]; 
 _obj setVectorUp [0,0,1]};

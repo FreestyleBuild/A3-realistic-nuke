@@ -1,7 +1,7 @@
-//Version 0.1.1
+//Version 0.2.0
 
 
-private["_blastPos", "_20psi", "_5psi", "_1psi", "_y", "_radFireball", "_rad1psi", "_rad5psi", "_rad20psi", "_rad500rem", "_rad5000rem", "_rad100thermal", "_rad50thermal", "_int", "_jam", "_debug", "_damage"];
+private["_blastPos", "_20psi", "_5psi", "_1psi", "_y", "_radFireball", "_rad1psi", "_rad5psi", "_rad20psi", "_rad500rem", "_rad5000rem", "_rad100thermal", "_rad50thermal", "_int", "_jam", "_debug", "_damage", "_uniforms", "_goggles", "_radFallout"];
 //hint str "NUKED";
 
 _blastPos = _this select 0;
@@ -17,6 +17,12 @@ _rad500rem = (_y ^ 0.16353) * 228.38886 + (_y ^ 3) * 7.86898e-8 - 0.00175 * (_y 
 _rad5000rem = (_y ^ 0.21107) * 424.37067 + (_y ^ 3) * 2.40299e-6 - 0.00175 * (_y ^ 2) + (_y ^ 0.21107) * 85.15598;
 _rad100thermal = (_y ^ 0.43788) * 517.81986 + (_y ^ 3) * 3.17366e-11 - (_y ^ 2) * 4.76245e-6 + (_y ^ (-1.11864)) * 3.50645;
 _rad50thermal = (_y ^ 0.9993) * 283.0527 + (_y ^ 5) * 9.10689e-22 + (_y ^ 0.41672) * 598.33159 - 280.91567 * _y;
+
+_radFallout = (_rad20psi + _rad5psi) / 2;
+
+_uniforms = ["U_C_CBRN_Suit_01_White_F", "U_C_CBRN_Suit_01_Blue_F", "U_I_CBRN_Suit_01_AAF_F", "U_B_CBRN_Suit_01_wdl_F", "U_B_CBRN_Suit_01_Tropic_F", "U_B_CBRN_Suit_01_MTP_F", "U_I_E_CBRN_Suit_01_EAF_F"];
+_goggles = ["G_AirPurifyingRespirator_01_F", "G_AirPurifyingRespirator_01_nofilter_F", "G_AirPurifyingRespirator_02_black_F", "G_AirPurifyingRespirator_02_olive_F", "G_AirPurifyingRespirator_02_sand_F", "G_RegulatorMask_F"];
+
 
 if (_y >= 550) then {_rad5000rem = -1;};
 if (_y >= 2000) then {_rad500rem = -1;};
@@ -41,6 +47,16 @@ if (_debug) then {
 	_mark20psi setMarkerShape "ELLIPSE";
 	_mark20psi setMarkerSize [_rad20psi, _rad20psi];
 	_mark20psi setMarkerText "20 psi Airblast";
+	
+	
+	_markWaste = createMarker ["Nuclear Waste", _blastPos];
+	_markWaste setMarkerColor "ColorGreen";
+	_markWaste setMarkerBrush "FDiagonal";
+	_markWaste setMarkerShape "ELLIPSE";
+	_markWaste setMarkerSize [(_rad20psi + _rad5psi) / 2,(_rad20psi + _rad5psi) / 2];
+	_markWaste setMarkerText "Nuclear Waste";
+	
+	
 };
 
 _radFireball = _radFireball * 0.4;
@@ -54,7 +70,7 @@ _radFireball = _radFireball * 0.4;
 [_blastPos, _y, _radFireball] execVM "freestyleNuke\iniCondensationRings.sqf";
 
 
-
+[[_blastPos, _radFallout, 300],"freestyleNuke\falloutParticle.sqf"] remoteExec ["execVM",0];
 
 if (_damage) then {
 	_5000rem = [_blastPos, _rad5000rem] execVM "freestyleNuke\radioation5000rem.sqf";
@@ -73,6 +89,9 @@ if (_damage) then {
 
 
 	_jam = [_blastPos, _rad1psi] execVM "freestyleNuke\jamming.sqf";
+	
+	_waste = [_blastPos, _radFallout, 300, _uniforms, _goggles] execVM "freestyleNuke\nuclearWaste.sqf";
+	
 }
 
 //hint str "NUKE DONE";

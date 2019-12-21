@@ -1,3 +1,5 @@
+//Changed in 0.2.0
+
 
 private["_light", "_pos", "_obj", "_brigthness","_radius", "_source", "_vSpeed"];
 
@@ -7,7 +9,7 @@ _pos = _this select 0;
 _radius = _this select 1;
 
 _obj = "Sign_Sphere10cm_F" createVehicleLocal _pos;
-_brigthness = 100050;
+_brigthness = 10050;
 
 
 
@@ -24,8 +26,9 @@ _light lightAttachObject [_obj,[0,0,0]];
 _light setLightBrightness _brigthness;
 _light setLightColor [1,1,1];
 _light setLightUseFlare true;
-_light setLightFlareSize 100;
+_light setLightFlareSize 1500;
 _light setLightDayLight true;
+_light setLightFlareMaxDistance 100000;
 
 
 _source = "#particlesource" createVehicleLocal [0,0,0];
@@ -40,21 +43,21 @@ _source setDropInterval 0.1;
 
 sleep 0.1;
 while{_brigthness > 150} do {
-	_brigthness = _brigthness - 10000;
+	_brigthness = _brigthness - 1000;
 	_light setLightBrightness _brigthness;
 	sleep 0.01;
 };
 
 
-while{_brigthness < 100050} do {
-	_brigthness = _brigthness + 2000;
+while{_brigthness < 10050} do {
+	_brigthness = _brigthness + 200;
 	_light setLightBrightness _brigthness;
 	sleep 0.01;
 };
 
 while{_brigthness > 50} do {
 	_obj setPos [getPos _obj select 0, getPos _obj select 1, (getPos _obj select 2) + 1 ];
-	_brigthness = _brigthness - 8000;
+	_brigthness = _brigthness - 800;
 	_light setLightBrightness _brigthness;
 	sleep 0.03;
 };
@@ -62,7 +65,7 @@ while{_brigthness > 50} do {
 _light setLightColor [1,0.3,0];
 _light setLightDayLight true;
 
-while{_brigthness < 700} do {
+while{_brigthness < 200} do {
 	_obj setPos [getPos _obj select 0, getPos _obj select 1, (getPos _obj select 2) + (_vSpeed / 50) ];
 	_brigthness = _brigthness + 50;
 	_light setLightBrightness _brigthness;
@@ -83,7 +86,7 @@ while{_brigthness > 0} do
 {
 		_brigthness = _brigthness + (random [-5, -2, -1]);
 		_light setLightBrightness _brigthness;
-		sleep 0.1;
+		sleep 0.3;
 };
 
 

@@ -1,0 +1,35 @@
+Changelog:
+
+
+Version 0.2.0:
+
+Added fallout and new particles. Fixed some bugs with the lighting, particles and damage.
+
+
+New:
+
+- Added nuclearWaste.sqf
+	- after detonation nuclear waste is spread around the ground zero
+	- units within this area are damaged every few seconds
+	- you can negate the effect by wearing a CBRN suits and a breathing mask, thanks to user "the Cheshire" for the idea
+	
+- Added falloutParticle.sqf
+	- particle effects for the fallout effect and near the center of the blast, thanks to user "jushdrug" for the suggetsion
+	
+	
+Changed/Fixed:
+
+- airblast1psi.sqf, airblast5psi.sqf, airblast20psi.sqf, radioation500rem.sqf, radioation5000rem.sqf, thermal50.sqf, thermal100.sqf, jamming.sqf
+	- fixed a bug where units and vehicles objects where not selected correctly, thanks to user "Mikey74" for reporting this
+	- some minor changes in the damage stats
+	- units with damage disabled shoudl no longer to damaged by any effect, again thanks to "Mikey74" 
+	
+- condensationRing.sqf, blastwave.sqf, mushroomcloud.sqf
+	- minor changes to particle effects
+	- fixed a bug with small mushroomclouds having to few particles
+
+- flash.sqf
+	- reduced brightness and increased flare size to avoid glitches, thanks to user "jushdrug" for reporting this
+	
+- iniNuke.sqf
+	- updated to use the new scripts

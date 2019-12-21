@@ -1,4 +1,5 @@
-//Change in 0.1.1
+//Changed in 0.2.0
+//Changed in 0.1.1
 
 
 private ["_blastPos","_radius5", "_rad20psi","_allBuildings", "_allTrees", "_allVehicles", "_allUnits"];
@@ -28,9 +29,9 @@ _abort = false;
 
 _allTrees = nearestTerrainObjects [_blastPos, ["SMALL TREE", "BUSH"], _radius5];
 //_allBuildings = nearestTerrainObjects [_blastPos, [], _curRadius5];
-_allBuildings = _blastPos nearObjects ["Building", _radius5];
-_allVehicles = _blastPos nearObjects ["AllVehicles", _radius5];
-_allUnits = _blastPos nearObjects ["Man", _radius5];
+_allBuildings = nearestObjects [_blastPos ,["Building"], _radius5];
+_allVehicles = nearestObjects [_blastPos ,["LandVehicles", "Air", "Ship"], _radius5];
+_allUnits = nearestObjects [_blastPos ,["Man"], _radius5];
 
 while{_curRadius5 <= _radius5} do {
 
@@ -60,8 +61,8 @@ if (_h >= (_curRadius5 - 40) && _h <= _curRadius5) then {_x setDamage[0.9 * _cur
 
 { 
 _h = (getPos _x) distance _blastPos; 
-if (_h >= (_curRadius5 - 40) && _h <= _curRadius5 ) then {
-_x setDamage[(random 30) / 100 + _curDamage5 * 0.7 + damage _x, true];
+if (_h >= (_curRadius5 - 40) && _h <= _curRadius5 && isDamageAllowed _x) then {
+_x setDamage[(random 30) / 100 + _curDamage5 * 1.5 + damage _x, true];
 //if(!(_x call KK_fnc_inHouse)) then {};
 //if(_x call KK_fnc_inHouse) then {_x setDamage[_curDamage5 * 0.01 + damage _x, true];};
  };

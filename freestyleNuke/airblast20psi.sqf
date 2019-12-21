@@ -1,4 +1,4 @@
-
+//Changed in 0.2.0
 
 
 private ["_blastPos","_radius20", "_allBuildings", "_allTrees", "_allVehicles", "_allUnits", "_curRadius20", "_mark20psi", "_abort"];
@@ -26,15 +26,15 @@ _allTrees = nearestTerrainObjects [_blastPos, ["TREE", "SMALL TREE", "BUSH", "FO
 _allBuildings = nearestTerrainObjects [_blastPos, ["BUILDING", "HOUSE", "CHURCH", "CHAPEL", "CROSS", "BUNKER", "FORTRESS", "FOUNTAIN", "VIEW-TOWER", "LIGHTHOUSE", "QUAY", "FUELSTATION", "HOSPITAL", "FENCE", "WALL", "HIDE", "BUSSTOP", "ROAD", "TRANSMITTER", "STACK", "RUIN", "TOURISM", "WATERTOWER", "TRACK", "MAIN ROAD", "POWER LINES", "RAILWAY", "POWERSOLAR", "POWERWAVE", "POWERWIND", "SHIPWRECK"], _radius20];
 //_allBuildings = _blastPos nearObjects ["Building", _radius20];
 _allVehicles = _blastPos nearObjects ["AllVehicles", _radius20];
-_allUnits = _blastPos nearObjects ["Man", _radius20];
+//_allUnits = _blastPos nearObjects ["Man", _radius20];
 
 while{_curRadius20 <= _radius20} do {
 
 
 { _x hideObject true;} forEach _allTrees;
 { _x setDamage[1, false]; } forEach _allBuildings;
-{ _x setDamage[1, true]; } forEach _allVehicles;
-{ _x setDamage[1, true];} forEach _allUnits;
+//{ _x setDamage[1, false]; } forEach _allVehicles;
+{ if(isDamageAllowed _x) then {_x setDamage[1, false];};} forEach _allVehicles;
 
 
 if(_abort) exitWith{};

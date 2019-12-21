@@ -1,4 +1,4 @@
-
+//Changed in 0.2.0
 
 
 private ["_blastPos","_radius1","_allVehicles", "_prevSate", "_i", "_jammed"];
@@ -9,7 +9,7 @@ _blastPos = _this select 0;
 _radius1 = _this select 1;
 
 
-_allVehicles = _blastPos nearObjects ["AllVehicles", _radius1 * 2];
+_allVehicles = nearestObjects [_blastPos ,["LandVehicles", "Air", "Ship"], _radius1 * 2];
 
 _jammed = "HitAvionics"; 
 

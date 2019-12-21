@@ -1,3 +1,5 @@
+//Changed in 0.2.0
+
 
 private["_pos", "_obj","_cloudRadius", "_cloudBottom", "_cloudTop", "_lifetime", "_cap", "_capLifetime", "_capObj", "_vSpeed", "_h", "_cloudLifetime"];
 
@@ -40,11 +42,12 @@ _cap setParticleCircle [_radius, [0,0,0]];
 
 _cap setParticleParams [["\A3\data_f\ParticleEffects\Universal\Universal_02.p3d",8,0,40,1], "", "Billboard", 1, _capLifetime, [0,0,0], [0,0,_vSpeed], 0.1, 9.996,7.84, 0, [_radius ,_radius], [[0.4,0.4,0.4,1],[0.6,0.6,0.6,0.7]], [0.2,0.2], 1, 0.1, "", "", _capObj, 0.0, false, -1.0, [[0.4,0.4,0.4,1],[0.6,0.6,0.6,0.7]]];
 
-_source setParticleParams [["\A3\data_f\ParticleEffects\Universal\Universal_02.p3d",8,0,40,1], "", "Billboard", 1, _lifetime, [0,0,0], [0,0,_vSpeed * 0.9], 0.1, 9.996,7.84, 0, [_radius * 1.4,_radius], [[0.4,0.4,0.4,1],[0.6,0.6,0.6,0.7]], [0.2,0.2], 1, 0.1, "", "", _obj, 0.0, true, -1.0, [[0.4,0.4,0.4,1],[0.6,0.6,0.6,0.7]]];
+_source setParticleParams [["\A3\data_f\ParticleEffects\Universal\Universal_02.p3d",8,0,40,1], "", "Billboard", 1, _lifetime * 1.1, [0,0,0], [0,0,_vSpeed * 0.9], 0.1, 9.996,7.84, 0, [_radius * 1.4,_radius], [[0.4,0.4,0.4,1],[0.6,0.6,0.6,1]], [0.2,0.2], 1, 0.1, "", "", _obj, 0.0, true, -1.0, [[0.4,0.4,0.4,1],[0.6,0.6,0.6,1]]];
 
 
 
 _source setDropInterval 0.4;
+if ((_radius / (_vSpeed * 5)) < 0.4) then {_source setDropInterval (_radius / (_vSpeed * 5))};
 _cap setDropInterval 0.02;
 
 

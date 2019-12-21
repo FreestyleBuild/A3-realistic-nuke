@@ -1,4 +1,4 @@
-
+//Changed in 0.2.0
 
 
 private ["_blastPos","_radius5000rem", "_allUnits", "_mark5000rem", "_h"];
@@ -28,7 +28,7 @@ _allUnits = _blastPos nearObjects ["Man", _radius5000rem];
 
 { 
 _h = [objNull, "GEOM"] checkVisibility [_blastPos, getPosASL _x];
-if ( _h >= 0.5) then {_x setDamage[1, true];};
+if ( _h >= 0.5 && isDamageAllowed _x) then {_x setDamage[1, true];};
 
 } forEach _allUnits;
 

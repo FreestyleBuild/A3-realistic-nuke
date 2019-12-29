@@ -1,3 +1,4 @@
+//Changed in 0.2.1
 //Changed in 0.2.0
 
 
@@ -48,17 +49,20 @@ if (_curDamage1 > 1) then {_curDamage1 = 1;};
 
 {
 _h = (getPos _x) distance _blastPos; 
-if (_h >= (_curRadius1 - 40) && _h <= _curRadius1) then {_x setDamage[_curDamage1 * 1.5 + damage _x, false]; };
+if (_h > ((_curRadius1 - 40) max _rad5psi) && _h <= _curRadius1) then {_x setDamage[_curDamage1 * 1.5 + damage _x, false]; };
 } forEach _allBuildings;
 
 {
 _h = (getPos _x) distance _blastPos; 
-if (_h >= (_curRadius1 - 40) && _h <= _curRadius1) then {_x setDamage[_curDamage1 + damage _x, true]; };
+if (_h > ((_curRadius1 - 40) max _rad5psi) && _h <= _curRadius1) then {_x setDamage[_curDamage1 + damage _x, true]; };
 } forEach _allVehicles;
 
 { 
 _h = (getPos _x) distance _blastPos; 
-if (_h >= (_curRadius1 - 40) && _h <= _curRadius1 && isDamageAllowed _x) then {_x setDamage[_curDamage1 + damage _x, true]; };
+if (_h > ((_curRadius1 - 40) max _rad5psi) && _h <= _curRadius1 && isDamageAllowed _x) then 
+{
+	if (stance _x == "PRONE") then {_x setDamage[(_curDamage1 / 1.5) + damage _x, true];} else {_x setDamage[_curDamage1 + damage _x, true];}; 
+};
 } forEach _allUnits;
 
 

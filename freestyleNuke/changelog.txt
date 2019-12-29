@@ -1,6 +1,24 @@
 Changelog:
 
 
+Version 0.2.1:
+
+Blast waves now throw away units and vehicles, some bug fixes.
+
+
+New:
+
+- airblast5psi.sqf, airblast20psi.sqf
+	- vehicles are now thrown back (distance depending on their mass) and are flipped sideways
+	- units are thrown back and down to the gound (they are set to prone stance)
+	
+Changed/Fixed:
+
+- airblast1psi.sqf, airblast5psi.sqf, airblast20psi.sqf
+	- units that go prone receive less damage and are not thrown back (20 psi blastwave is still always lethal)
+	- fixed bug where units/vehicles/buildings at the margin of the 5 psi zone were always completely destroyed instead of just receiving damage
+	- fixed bug which coused 20 psi shockwave to affect all objects instantly, now it should properly expand
+
 Version 0.2.0:
 
 Added fallout and new particles. Fixed some bugs with the lighting, particles and damage.

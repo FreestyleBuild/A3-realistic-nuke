@@ -10,7 +10,7 @@ _radius500rem = _this select 1;
 if (_radius500rem == -1) exitWith{};
 
 /*
-
+//Debug Only
 _mark500rem = createMarker ["500 rem Radiation", _blastPos];
 _mark500rem setMarkerColor "ColorGreen";
 _mark500rem setMarkerShape "ELLIPSE";
@@ -28,7 +28,7 @@ _allUnits = _blastPos nearObjects ["Man", _radius500rem];
 
 { 
 _h = [objNull, "GEOM"] checkVisibility [_blastPos, getPosASL _x];
-if (&& isDamageAllowed _x) then {_x setDamage[_h + damage _x + 0.3, true];};
+if ((_h >= 0.1) && isDamageAllowed _x) then {_x setDamage[_h + damage _x + 0.3, true];};
 
 } forEach _allUnits;
 

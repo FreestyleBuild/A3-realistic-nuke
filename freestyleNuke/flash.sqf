@@ -1,3 +1,4 @@
+//Changed in 0.3.0
 //Changed in 0.2.0
 
 
@@ -10,8 +11,6 @@ _radius = _this select 1;
 
 _obj = "Sign_Sphere10cm_F" createVehicleLocal _pos;
 _brigthness = 10050;
-
-
 
 
 playSound3D ["A3\Sounds_F\sfx\explosion3.wss", _obj,false, _pos,5, 0.3, 0];
@@ -41,6 +40,7 @@ _source setParticleParams [["\A3\data_f\ParticleEffects\Universal\Universal.p3d"
 _source setDropInterval 0.1;
 
 
+//create initial flash
 sleep 0.1;
 while{_brigthness > 150} do {
 	_brigthness = _brigthness - 1000;
@@ -48,13 +48,14 @@ while{_brigthness > 150} do {
 	sleep 0.01;
 };
 
-
+//reduce brigthness to create double flash
 while{_brigthness < 10050} do {
 	_brigthness = _brigthness + 200;
 	_light setLightBrightness _brigthness;
 	sleep 0.01;
 };
 
+//create second flash
 while{_brigthness > 50} do {
 	_obj setPos [getPos _obj select 0, getPos _obj select 1, (getPos _obj select 2) + 1 ];
 	_brigthness = _brigthness - 800;
@@ -62,6 +63,7 @@ while{_brigthness > 50} do {
 	sleep 0.03;
 };
 
+//set color to orange to illuminate the fireball/effects
 _light setLightColor [1,0.3,0];
 _light setLightDayLight true;
 
@@ -72,11 +74,10 @@ while{_brigthness < 200} do {
 	sleep 0.02;
 };
 
+//let lightsource rise with the mushroomcloud
 while {((getPosATL _obj) select 2) < _radius * 2} do 
 {
 	_obj setPosATL [getPosATL _obj select 0, getPosATL _obj select 1, (getPosATL _obj select 2) + (_vSpeed / 10) ];
-	//_brigthness = _brigthness + (random [-200, 0, 200]);
-	//_light setLightBrightness _brigthness;
 	sleep 0.1;
 };
 
@@ -93,14 +94,3 @@ while{_brigthness > 0} do
 
 deleteVehicle _light;
 deleteVehicle _obj;
-
-/*
-_light = "lightpoint" createVehicle[0,0,0];
-_light setLightAmbient [0.7,0.7,0.8];  
-_light setLightColor [0.7,0.7,0.8];
-_light setLightIntensity 30;
-_light setLightUseFlare true;
-_light setLightFlareSize 10;
-_light setLightFlareMaxDistance 2000; 
-_light setLightAttenuation [200, 1, 100,  0, 50,190];
-*/

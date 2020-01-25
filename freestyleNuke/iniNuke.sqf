@@ -1,14 +1,16 @@
-//Version 0.2.0
+//Version 0.3.0
+//Version 0.2.1
 
 
 private["_blastPos", "_20psi", "_5psi", "_1psi", "_y", "_radFireball", "_rad1psi", "_rad5psi", "_rad20psi", "_rad500rem", "_rad5000rem", "_rad100thermal", "_rad50thermal", "_int", "_jam", "_debug", "_damage", "_uniforms", "_goggles", "_radFallout"];
-//hint str "NUKED";
 
 _blastPos = _this select 0;
 _y = _this select 1;
 _debug = _this select 2;
 _damage = _this select 3;
 
+
+//calculate relevant data
 _radFireball = (_y ^ 0.39991) * 79.30731 - 0.33774;
 _rad1psi = (_y ^ 0.33308) * 1179.03371;
 _rad5psi = (_y ^ 0.33325) * 458.29634;
@@ -20,6 +22,7 @@ _rad50thermal = (_y ^ 0.9993) * 283.0527 + (_y ^ 5) * 9.10689e-22 + (_y ^ 0.4167
 
 _radFallout = (_rad20psi + _rad5psi) / 2;
 
+//uniforms and googles that protect against fallout
 _uniforms = ["U_C_CBRN_Suit_01_White_F", "U_C_CBRN_Suit_01_Blue_F", "U_I_CBRN_Suit_01_AAF_F", "U_B_CBRN_Suit_01_wdl_F", "U_B_CBRN_Suit_01_Tropic_F", "U_B_CBRN_Suit_01_MTP_F", "U_I_E_CBRN_Suit_01_EAF_F"];
 _goggles = ["G_AirPurifyingRespirator_01_F", "G_AirPurifyingRespirator_01_nofilter_F", "G_AirPurifyingRespirator_02_black_F", "G_AirPurifyingRespirator_02_olive_F", "G_AirPurifyingRespirator_02_sand_F", "G_RegulatorMask_F"];
 
@@ -28,7 +31,7 @@ if (_y >= 550) then {_rad5000rem = -1;};
 if (_y >= 2000) then {_rad500rem = -1;};
 
 
-
+//draw marker of the explosion on map (debug option)
 if (_debug) then {
 	_mark1psi = createMarker ["1 psi Airblast", _blastPos];
 	_mark1psi setMarkerColor "ColorGrey";
@@ -61,17 +64,17 @@ if (_debug) then {
 
 _radFireball = _radFireball * 0.4;
 
+//creates visual effects
 [[_blastPos, _radFireball],"freestyleNuke\flash.sqf"] remoteExec ["execVM",0];
-[[_blastPos, 0.7 * _radFireball,_radFireball * 6,_radFireball * 8.5],"freestyleNuke\mushroomcloud.sqf"] remoteExec ["execVM",0];
+[[_blastPos, 0.7 * _radFireball,_rad5psi * 0.8,_rad5psi * 1.1],"freestyleNuke\mushroomcloud.sqf"] remoteExec ["execVM",0];
+//[[_blastPos, 0.7 * _radFireball,_radFireball * 6,_radFireball * 8.5],"freestyleNuke\mushroomcloud.sqf"] remoteExec ["execVM",0]; //legacy function
 [[_blastPos, _rad1psi],"freestyleNuke\blastwave.sqf"] remoteExec ["execVM",0];
 
+[_blastPos, _y, _radFireball * 2] execVM "freestyleNuke\iniCondensationRings.sqf";
 
+[[_blastPos, _radFallout, 900],"freestyleNuke\falloutParticle.sqf"] remoteExec ["execVM",0];
 
-[_blastPos, _y, _radFireball] execVM "freestyleNuke\iniCondensationRings.sqf";
-
-
-[[_blastPos, _radFallout, 300],"freestyleNuke\falloutParticle.sqf"] remoteExec ["execVM",0];
-
+//create damaging effects
 if (_damage) then {
 	_5000rem = [_blastPos, _rad5000rem] execVM "freestyleNuke\radioation5000rem.sqf";
 	_500rem = [_blastPos, _rad500rem] execVM "freestyleNuke\radioation5000rem.sqf";
@@ -90,8 +93,7 @@ if (_damage) then {
 
 	_jam = [_blastPos, _rad1psi] execVM "freestyleNuke\jamming.sqf";
 	
-	_waste = [_blastPos, _radFallout, 300, _uniforms, _goggles] execVM "freestyleNuke\nuclearWaste.sqf";
+	_waste = [_blastPos, _radFallout, 900, _uniforms, _goggles] execVM "freestyleNuke\nuclearWaste.sqf";
 	
 }
 
-//hint str "NUKE DONE";

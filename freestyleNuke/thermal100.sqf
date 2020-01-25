@@ -11,6 +11,7 @@ if (_radius100thermal == -1) exitWith{};
 
 
 /*
+//Debug Only
 _mark100thermal = createMarker ["100% 3rd Degree burns", _blastPos];
 _mark100thermal setMarkerColor "ColorOrange";
 _mark100thermal setMarkerShape "ELLIPSE";
@@ -18,8 +19,6 @@ _mark100thermal setMarkerSize [_radius100thermal, _radius100thermal];
 _mark100thermal setMarkerText "100% 3rd Degree burns";
 
 */
-
-
 
 
 

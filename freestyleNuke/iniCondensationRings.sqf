@@ -1,4 +1,4 @@
-
+//Changed in 0.3.0
 private["_blastPos", "_rainLevel", "_fogLevel", "_yield", "_radius", "_n", "_int"];
 
 
@@ -13,11 +13,13 @@ _fogLevel = fog;
 
 if ((_fogLevel >= 0.05) || (_rainLevel >= 0.05)) then 
 {	
+	//calculate amount of rings
 	if(_yield <= 10) then {_n = 0;};
 	if(_yield > 10 && _yield <= 50) then {_n = 1;};
 	if(_yield > 50 && _yield <= 1000) then {_n = 2;};
 	if(_yield > 1000) then {_n = 3;};
-
+	
+	//create the rings
 	for "_i" from 0 to _n do 
 	{
 		[[_blastPos, _radius * 0.5 + _i * _radius * 0.1, _radius - (_i + 1) * _radius * 0.1],"freestyleNuke\condensationRing.sqf"] remoteExec ["execVM",0];

@@ -11,16 +11,13 @@ if (_radius50thermal == -1) exitWith{};
 
 
 /*
+//Debug Only
 _mark50thermal = createMarker ["50% 3rd Degree burns", _blastPos];
 _mark50thermal setMarkerColor "ColorRed";
 _mark50thermal setMarkerShape "ELLIPSE";
 _mark50thermal setMarkerSize [_radius50thermal, _radius50thermal];
 _mark50thermal setMarkerText "50% 3rd Degree burns";
 */
-
-
-
-
 
 
 _allUnits = _blastPos nearObjects ["Man", _radius50thermal];

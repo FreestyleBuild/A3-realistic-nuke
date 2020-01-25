@@ -1,6 +1,44 @@
 Changelog:
 
 
+Version 0.3.0 Fire and Effects:
+
+Some buildings are set on fire after the explosion, changes to particles, small fixes and the code has been slighty cleaned up.
+
+
+New:
+
+- Added iniFire.sqf
+	- some buildings will be set on fire by the detonation
+	- fires deal damage to units who get to cloase and slowly destroy the burning building itself
+	
+- Added fireFX.sqf
+	- particle effects for the new fires
+	
+
+Changed/Fixed:
+
+- airblast5psi.sqf
+	- now starts fires using iniFire.sqf, those fires last 5 to 6 minutes
+	- fixed bug with division by zero error occuring due to vehicle with mass 0
+	
+- blastwave.sqf, falloutParticle.sqf, mushroomcloud.sqf, flash.sqf
+	- various tweaks to particle colors and other particle properties
+	- fixed a bug where the mushroomcloud stem persisted longer than it cap
+	
+- radioation500rem.sqf, radioation5000rem
+	- fixed typo in code
+	- minor change to damage calculation in radioation500rem.sqf
+	
+- iniNuke.sqf
+	- changed arguments passed to mushroomcloud.sqf and flash.sqf to alter size of said effects
+	- nuclear fallout now lasts 900 seconds instead of 300 (5 minutes instead of 3)
+	
+- (almost) all files
+	- deleted unused code, cleaned up code
+	- some comments
+
+
 Version 0.2.1:
 
 Blast waves now throw away units and vehicles, some bug fixes.
@@ -11,6 +49,7 @@ New:
 - airblast5psi.sqf, airblast20psi.sqf
 	- vehicles are now thrown back (distance depending on their mass) and are flipped sideways
 	- units are thrown back and down to the gound (they are set to prone stance)
+	
 	
 Changed/Fixed:
 

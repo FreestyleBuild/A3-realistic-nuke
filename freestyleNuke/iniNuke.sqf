@@ -1,8 +1,9 @@
+//Version 0.4.0
 //Version 0.3.0
 //Version 0.2.1
 
 
-private["_blastPos", "_20psi", "_5psi", "_1psi", "_y", "_radFireball", "_rad1psi", "_rad5psi", "_rad20psi", "_rad500rem", "_rad5000rem", "_rad100thermal", "_rad50thermal", "_int", "_jam", "_debug", "_damage", "_uniforms", "_goggles", "_radFallout"];
+private["_blastPos", "_20psi", "_5psi", "_1psi", "_y", "_radFireball", "_rad1psi", "_rad5psi", "_rad20psi", "_rad500rem", "_rad5000rem", "_rad100thermal", "_rad50thermal", "_int", "_jam", "_debug", "_damage", "_uniforms", "_goggles", "_radFallout", "_radCrater"];
 
 _blastPos = _this select 0;
 _y = _this select 1;
@@ -19,6 +20,11 @@ _rad500rem = (_y ^ 0.16353) * 228.38886 + (_y ^ 3) * 7.86898e-8 - 0.00175 * (_y 
 _rad5000rem = (_y ^ 0.21107) * 424.37067 + (_y ^ 3) * 2.40299e-6 - 0.00175 * (_y ^ 2) + (_y ^ 0.21107) * 85.15598;
 _rad100thermal = (_y ^ 0.43788) * 517.81986 + (_y ^ 3) * 3.17366e-11 - (_y ^ 2) * 4.76245e-6 + (_y ^ (-1.11864)) * 3.50645;
 _rad50thermal = (_y ^ 0.9993) * 283.0527 + (_y ^ 5) * 9.10689e-22 + (_y ^ 0.41672) * 598.33159 - 280.91567 * _y;
+_radCrater = (_y ^ 0.3342305) * 19.13638 + 0.4707669;
+
+if(_radCrater < 10) then {
+	_radCrater = 0;
+};
 
 _radFallout = (_rad20psi + _rad5psi) / 2;
 
@@ -81,9 +87,12 @@ if (_damage) then {
 	_100thermal = [_blastPos, _rad100thermal] execVM "freestyleNuke\thermal100.sqf";
 	_50thermal = [_blastPos, _rad50thermal] execVM "freestyleNuke\thermal50.sqf";
 
-	_20psi = [_blastPos, _rad20psi] execVM "freestyleNuke\airblast20psi.sqf";
+	
+	_20psi = [_blastPos, _rad20psi, _radCrater + 10] execVM "freestyleNuke\airblast20psi.sqf";
 	waitUntil { scriptDone _20psi };
-
+	
+	_crater = [_blastPos, _radCrater] execVM "freestyleNuke\crater.sqf";
+	
 	_5psi = [_blastPos, _rad5psi,_rad20psi] execVM "freestyleNuke\airblast5psi.sqf";
 	waitUntil { scriptDone _5psi };
 

@@ -1,3 +1,4 @@
+//Changed in 0.4.0
 //Changed in 0.3.0
 //Changed in 0.2.0
 
@@ -89,6 +90,8 @@ while {_h < 1.0} do
 deleteVehicle _cap;
 sleep (_cloudLifetime - 20) / 2;
 deleteVehicle _source;
+deleteVehicle _capObj;
+deleteVehicle _obj;
 //Example for Particle Array:
 //[ShapeName, AnimationName, Type, TimerPeriod, LifeTime, Position, MoveVelocity, RotationVelocity, Weight, Volume, Rubbing, Size, Color, AnimationPhase, RandomDirectionPeriod, RandomDirectionIntensity, OnTimer, BeforeDestroy, Object, Angle, OnSurface, BounceOnSurface, EmissiveColor]
 

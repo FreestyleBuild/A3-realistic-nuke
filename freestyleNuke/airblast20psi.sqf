@@ -1,13 +1,15 @@
+//Changed in 0.4.0
 //Changed in 0.3.0
 //Changed in 0.2.1
 //Changed in 0.2.0
 
 
-private ["_blastPos","_radius20", "_allBuildings", "_allTrees", "_allVehicles", "_allUnits", "_curRadius20", "_mark20psi", "_abort"];
+private ["_blastPos","_radius20", "_allBuildings", "_allTrees", "_allVehicles", "_allUnits", "_curRadius20", "_mark20psi", "_abort", "_hideRadius"];
 
 
 _blastPos = _this select 0;
 _radius20 = _this select 1;
+_hideRadius = _this select 2;
 _curRadius20 = 40;
 
 
@@ -24,11 +26,13 @@ _allVehicles = _blastPos nearObjects ["AllVehicles", _radius20];
 while{_curRadius20 <= _radius20} do {
 
 
-{ _x hideObject true;} forEach _allTrees;
+{ _x hideObjectGlobal true;} forEach _allTrees;
 
 {
+//hide objects for crater generation
 _h = (getPos _x) distance _blastPos; 
-if (_h > (_curRadius20 - 40) && _h <= _curRadius20) then {_x setDamage[1, false]; };
+if (_h > (_curRadius20 - 40) && _h <= _curRadius20 && _h <= _hideRadius) then {_x hideObjectGlobal true;};
+if (_h > (_curRadius20 - 40) && _h <= _curRadius20 && _h > _hideRadius) then {_x setDamage[1, false]; };
 } forEach _allBuildings;
 
 

@@ -1,5 +1,33 @@
 Changelog:
 
+Version 0.4.0 Craters:
+
+The Explosion now creates a crater.
+
+
+New:
+
+- Added crater.sqf
+	- a crater will be created by the explsoion
+	- depending a its size its either a single object or multiple stones aranged in a circle, with debris at the center
+	- the crater does not disappear, it can be used to block terrain like roads are airfields
+	- if the bomb detonates above groudn level the crater will be smaller
+
+
+Changed/Fixed
+
+- airblast20psi.sqf
+	- will now hide objects close to the center to allow for the creation of the crater
+	
+- mushroomcloud.sqf
+	- small tweaks and fixes foe the effects
+	
+- fireFX.sqf
+	- small changes to sound effects, shoudl now have for variations
+
+- iniNuke.sqf
+	- now calls crater.sqf and calculates the radius of the crater
+
 
 Version 0.3.0 Fire and Effects:
 

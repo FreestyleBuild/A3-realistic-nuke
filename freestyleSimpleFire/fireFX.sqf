@@ -1,6 +1,7 @@
+//Changed in 0.4.0
 //Created in 0.3.0
 
-private["_obj","_radius", "_lifetime", "_color", "_color2", "_flames", "_smoke", "_haze", "_light"];
+private["_obj","_radius", "_lifetime", "_color", "_color2", "_flames", "_smoke", "_haze", "_light", "_sound"];
 
 if (!hasInterface) exitWith {};
 
@@ -82,6 +83,7 @@ _light setLightFlareMaxDistance 100;
 
 
 //add burning sound effects
+_sound = selectRandom ["A3\Sounds_F\sfx\fire2_loop.wss", "A3\Sounds_F\sfx\fire3_loop.wss", "A3\Sounds_F\sfx\fire1_loop.wss"];
 0 = [_obj, _radius * 12] spawn
 {
 	private _o = _this select 0;

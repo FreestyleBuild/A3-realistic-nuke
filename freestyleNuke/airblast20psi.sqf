@@ -1,3 +1,4 @@
+//Changed in 0.4.1
 //Changed in 0.4.0
 //Changed in 0.3.0
 //Changed in 0.2.1
@@ -18,7 +19,8 @@ _abort = false;
 
 //get affected objects
 _allTrees = nearestTerrainObjects [_blastPos, ["TREE", "SMALL TREE", "BUSH", "FOREST","FOREST BORDER", "FOREST TRIANGLE", "FOREST SQUARE"], _radius20];
-_allBuildings = nearestTerrainObjects [_blastPos, ["BUILDING", "HOUSE", "CHURCH", "CHAPEL", "CROSS", "BUNKER", "FORTRESS", "FOUNTAIN", "VIEW-TOWER", "LIGHTHOUSE", "QUAY", "FUELSTATION", "HOSPITAL", "FENCE", "WALL", "HIDE", "BUSSTOP", "ROAD", "TRANSMITTER", "STACK", "RUIN", "TOURISM", "WATERTOWER", "TRACK", "MAIN ROAD", "POWER LINES", "RAILWAY", "POWERSOLAR", "POWERWAVE", "POWERWIND", "SHIPWRECK"], _radius20];
+_allBuildings = nearestObjects [_blastPos ,["Building"], _radius20];
+//_allBuildings = nearestTerrainObjects [_blastPos, ["BUILDING", "HOUSE", "CHURCH", "CHAPEL", "CROSS", "BUNKER", "FORTRESS", "FOUNTAIN", "VIEW-TOWER", "LIGHTHOUSE", "QUAY", "FUELSTATION", "HOSPITAL", "FENCE", "WALL", "HIDE", "BUSSTOP", "ROAD", "TRANSMITTER", "STACK", "RUIN", "TOURISM", "WATERTOWER", "TRACK", "MAIN ROAD", "POWER LINES", "RAILWAY", "POWERSOLAR", "POWERWAVE", "POWERWIND", "SHIPWRECK"], _radius20];
 _allVehicles = _blastPos nearObjects ["AllVehicles", _radius20];
 
 
@@ -31,8 +33,8 @@ while{_curRadius20 <= _radius20} do {
 {
 //hide objects for crater generation
 _h = (getPos _x) distance _blastPos; 
-if (_h > (_curRadius20 - 40) && _h <= _curRadius20 && _h <= _hideRadius) then {_x hideObjectGlobal true;};
-if (_h > (_curRadius20 - 40) && _h <= _curRadius20 && _h > _hideRadius) then {_x setDamage[1, false]; };
+if (_h > (_curRadius20 - 40) && _h <= _curRadius20 && _h <= _hideRadius && isDamageAllowed _x) then {_x hideObjectGlobal true;};
+if (_h > (_curRadius20 - 40) && _h <= _curRadius20 && _h > _hideRadius && isDamageAllowed _x) then {_x setDamage[1, false]; };
 } forEach _allBuildings;
 
 

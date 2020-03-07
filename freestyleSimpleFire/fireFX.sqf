@@ -1,3 +1,4 @@
+//Changed in 0.4.1 Fixed Sounds
 //Changed in 0.4.0
 //Created in 0.3.0
 
@@ -84,12 +85,13 @@ _light setLightFlareMaxDistance 100;
 
 //add burning sound effects
 _sound = selectRandom ["A3\Sounds_F\sfx\fire2_loop.wss", "A3\Sounds_F\sfx\fire3_loop.wss", "A3\Sounds_F\sfx\fire1_loop.wss"];
-0 = [_obj, _radius * 12] spawn
+0 = [_obj, _radius * 12, _sound] spawn
 {
 	private _o = _this select 0;
 	private _r = _this select 1;
+	private _s = _this select 2;
 	while{!(isNull _o)} do{
-	playSound3D ["A3\Sounds_F\sfx\fire2_loop.wss", _o,false, getPos _o,3, 0.8, 0];
+	playSound3D [_s, _o,false, getPos _o,3, 0.8, 0];
 	sleep 4;
 	};
 };

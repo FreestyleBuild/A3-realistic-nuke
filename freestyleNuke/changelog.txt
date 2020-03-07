@@ -1,5 +1,21 @@
 Changelog:
 
+
+Version 0.4.1:
+
+Bug fixes to damage and sound effects.
+
+Changed/Fixed:
+
+- airblast20psi.sqf
+	- does no longer hide objects which are invulnerable
+	- now properly affects all buildings
+
+- fireFX.sqf
+	- soudn randomization added/fixed
+
+
+
 Version 0.4.0 Craters:
 
 The Explosion now creates a crater.
@@ -14,7 +30,7 @@ New:
 	- if the bomb detonates above groudn level the crater will be smaller
 
 
-Changed/Fixed
+Changed/Fixed:
 
 - airblast20psi.sqf
 	- will now hide objects close to the center to allow for the creation of the crater
@@ -27,6 +43,7 @@ Changed/Fixed
 
 - iniNuke.sqf
 	- now calls crater.sqf and calculates the radius of the crater
+
 
 
 Version 0.3.0 Fire and Effects:
@@ -67,6 +84,7 @@ Changed/Fixed:
 	- some comments
 
 
+
 Version 0.2.1:
 
 Blast waves now throw away units and vehicles, some bug fixes.
@@ -85,6 +103,8 @@ Changed/Fixed:
 	- units that go prone receive less damage and are not thrown back (20 psi blastwave is still always lethal)
 	- fixed bug where units/vehicles/buildings at the margin of the 5 psi zone were always completely destroyed instead of just receiving damage
 	- fixed bug which coused 20 psi shockwave to affect all objects instantly, now it should properly expand
+
+
 
 Version 0.2.0:
 

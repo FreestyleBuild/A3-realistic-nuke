@@ -1,3 +1,4 @@
+//Changed in 0.5.0
 //Changed in 0.3.0
 //Changed in 0.2.0
 
@@ -8,6 +9,7 @@ if (!hasInterface) exitWith {};
 
 _pos = _this select 0;
 _radius = _this select 1;
+_airMode = _this select 2;
 
 _obj = "Sign_Sphere10cm_F" createVehicleLocal _pos;
 _brigthness = 10050;
@@ -18,7 +20,7 @@ playSound3D ["A3\Sounds_F\sfx\explosion3.wss", _obj,false, _pos,5, 0.3, 0];
 
 _vSpeed = 20;
 
-if (isServer) then {_obj setPos [getPos _obj select 0,getPos _obj select 1,0]; 
+if (isServer) then {_obj setPos _pos; //if (isServer) then {_obj setPos [getPos _obj select 0,getPos _obj select 1, getPos _obj select 2]; 
 _obj setVectorUp [0,0,1]};
 _light = "#lightpoint" createVehicleLocal [0,0,0];
 _light lightAttachObject [_obj,[0,0,0]];
@@ -35,9 +37,18 @@ _source attachTo [_obj,[0,0,0]];
 
 
 
-_source setParticleParams [["\A3\data_f\ParticleEffects\Universal\Universal.p3d",16,2,16,0], "", "Billboard", 1, 1, [0,0,0], [0,0,0], 1.0, 1, 1, 1.0, [_radius,_radius], [[1,1,1,1],[1,0.4,0,1]], [1,1], 1, 0, "", "", _obj, 0.0, true, -1.0, [[1,1,1,1],[1,0.4,0,1]]];
+_source setParticleParams [["\A3\data_f\ParticleEffects\Universal\Universal.p3d",16,2,16,0], "", "Billboard", 1, 1, [0,0,0], [0,0,0], 1.0, 1, 1, 1.0, [_radius,_radius], [[1,1,1,1],[1,0.4,0,1]], [1,1], 1, 0, "", "", _obj, 0.0, false, -1.0, [[1,1,1,1],[1,0.4,0,1]]];
+
+if(_airMode) then
+{
+	_source setParticleParams [["\A3\data_f\ParticleEffects\Universal\Universal.p3d",16,2,16,0], "", "Billboard", 1, 1, [0,0,0], [0,0,0], 1.0, 1, 1, 1.0, [_radius * 2,_radius * 2], [[1,1,1,1],[1,0.4,0,1]], [1,1], 1, 0, "", "", _obj, 0.0, false, -1.0, [[1,1,1,1],[1,0.4,0,1]]];	
+};
+
+
+
 
 _source setDropInterval 0.1;
+
 
 
 //create initial flash
@@ -74,6 +85,13 @@ while{_brigthness < 200} do {
 	sleep 0.02;
 };
 
+
+if (_airMode) then 
+{
+	drop [["\A3\data_f\ParticleEffects\Universal\Universal.p3d",16,7,48,0], "", "Billboard", 1, 180, [0,0,0], [0,0,0.1], 0, 9.996,7.84, 0, [_radius * 2,_radius * 15,_radius * 20], [[0.2,0.2,0.2,1],[0.2,0.2,0.2,1]], [1,1], 1, 0, "", "", _obj, 0.0, false, -1.0, [[1,1,1,1],[1,1,1,0]]];
+};
+
+
 //let lightsource rise with the mushroomcloud
 while {((getPosATL _obj) select 2) < _radius * 2} do 
 {
@@ -93,4 +111,8 @@ while{_brigthness > 0} do
 
 
 deleteVehicle _light;
+if (_airMode) then 
+{
+	sleep 180;
+};
 deleteVehicle _obj;

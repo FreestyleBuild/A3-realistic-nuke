@@ -1,3 +1,4 @@
+//Changed in 0.5.0
 //Changed in 0.4.0
 //Changed in 0.3.0
 //Changed in 0.2.0
@@ -27,6 +28,47 @@ if (isServer) then {_obj setPos [getPos _obj select 0,getPos _obj select 1,0];
 _obj setVectorUp [0,0,1]};
 if (isServer) then {_capObj setPos [getPos _capObj select 0,getPos _capObj select 1, getPos _capObj select 2]; 
 _capObj setVectorUp [0,0,1]};
+
+
+
+
+if ((_radius / 1.5) <= 46) exitWith
+{
+	private _fragments = [];
+	private _moves = [];
+	
+	for "_i" from 0 to 5 do 
+	{
+		drop [["\A3\data_f\ParticleEffects\Universal\Universal_02.p3d",8,0,40,0], "", "Billboard", 1, _cloudLifetime, [0,0,0], [0,0,0], 0.1, 9.996,7.84, 0, [_radius * 5,_radius * 4.5], [_color,_colorTarget], [0.5,0.5], 1, 0.1, "", "", _obj, random(360)/(2 * pi), true, -1.0, [_color,_colorTarget]];
+	};
+	
+	
+	for "_i" from 1 to 15 do
+	{
+		_moves pushBack ((vectorNormalized [random(200) - 100, random(200) - 100, 150]));
+		_fragments pushBack ("Sign_Sphere10cm_F" createVehicleLocal _pos);
+	};
+	for "_i" from 1 to (floor(_cloudTop / 16)) do
+	{	
+		{
+			drop [["\A3\data_f\ParticleEffects\Universal\Universal_02.p3d",8,0,40,0], "", "Billboard", 1, _cloudLifetime, [0,0,0], [0,0,0], 0.1, 10,7.84, 0.1, [5 * _radius / _i + _radius * 0.5,5 * _radius / _i +  _radius * 0.5], [_color,_colorTarget], [0.2,0.2], 1, 0.15, "", "", _x, random(360)/(2 * pi), false, 1, [_color,_colorTarget]];
+		} forEach _fragments;
+		
+		for "_j" from 0 to (count _moves - 1) do
+		{
+			(_fragments # _j) setPos ((getPos (_fragments # _j)) vectorAdd ((_moves # _j) vectorMultiply ((5 * _radius / _i + _radius * 0.5)/ 2.5)));		
+		};
+		sleep 0.01;
+	};
+	{
+		deleteVehicle _x;
+	} forEach _fragments;
+
+};
+
+
+
+
 
 _source = "#particlesource" createVehicleLocal [0,0,0]; //creates the stem of the mushroom
 _source attachTo [_obj,[0,0,0]];
@@ -58,7 +100,7 @@ _cap setDropInterval 0.02;
 };
 for "_i" from 0 to 15 do 
 {
-	drop [["\A3\data_f\ParticleEffects\Universal\Universal_02.p3d",8,0,40,1], "", "Billboard", 1, _cloudLifetime / 2, [0,0,0], [0,0,0], 0.1, 9.996,7.84, 0, [_radius * 3,_radius * 2.5], [_color,_colorTarget], [0.5,0.5], 1, 0.1, "", "", _obj, 0.0, true, -1.0, [_color,_colorTarget]];
+	drop [["\A3\data_f\ParticleEffects\Universal\Universal_02.p3d",8,0,40,1], "", "Billboard", 1, _cloudLifetime / 2, [0,0,0], [0,0,0], 0.1, 9.996,7.84, 0, [_radius * 3,_radius * 2.5], [_color,_colorTarget], [0.5,0.5], 1, 0.1, "", "", _obj, random(360)/(2 * pi), true, -1.0, [_color,_colorTarget]];
 };
 
 

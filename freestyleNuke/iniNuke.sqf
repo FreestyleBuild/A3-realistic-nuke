@@ -1,15 +1,19 @@
+//Version 0.5.0
 //Version 0.4.1
 //Version 0.4.0
 //Version 0.3.0
 //Version 0.2.1
 
 
-private["_blastPos", "_20psi", "_5psi", "_1psi", "_y", "_radFireball", "_rad1psi", "_rad5psi", "_rad20psi", "_rad500rem", "_rad5000rem", "_rad100thermal", "_rad50thermal", "_int", "_jam", "_debug", "_damage", "_uniforms", "_goggles", "_radFallout", "_radCrater"];
+private["_blastPos", "_20psi", "_5psi", "_1psi", "_y", "_radFireball", "_rad1psi", "_rad5psi", "_rad20psi", "_rad500rem", "_rad5000rem", "_rad100thermal", "_rad50thermal", "_int", "_jam", "_debug", "_damage", "_uniforms", "_goggles", "_radFallout", "_radCrater", "_airMode"];
 
 _blastPos = _this select 0;
 _y = _this select 1;
 _debug = _this select 2;
 _damage = _this select 3;
+//_airMode = param[4, false];
+
+
 
 
 //calculate relevant data
@@ -22,6 +26,23 @@ _rad5000rem = (_y ^ 0.21107) * 424.37067 + (_y ^ 3) * 2.40299e-6 - 0.00175 * (_y
 _rad100thermal = (_y ^ 0.43788) * 517.81986 + (_y ^ 3) * 3.17366e-11 - (_y ^ 2) * 4.76245e-6 + (_y ^ (-1.11864)) * 3.50645;
 _rad50thermal = (_y ^ 0.9993) * 283.0527 + (_y ^ 5) * 9.10689e-22 + (_y ^ 0.41672) * 598.33159 - 280.91567 * _y;
 _radCrater = (_y ^ 0.3342305) * 19.13638 + 0.4707669;
+
+_airMode = switch (param[4, 2]) do
+{
+	case 0: {false};
+	case 1: {true};
+	case 2: {false};
+	default {false};
+};
+
+if ((param[4, 2] == 2) && (((_rad5psi + _rad20psi) / 2) < (_blastPos # 2))) then
+{
+	_airMode = true;
+};
+
+
+//Debug output
+//hint formatText ["Fireball: %1 m %2 1 psi: %3 m %2 5 psi: %4 m %2 20 psi: %5 m %2 500 rem: %6 m %2 5000 rem: %7 m %2 100 Thermal: %8 m %2 50 Thermal: %9 m %2 Crater: %10 m %2", _radFireball, lineBreak, _rad1psi, _rad5psi, _rad20psi, _rad500rem, _rad5000rem, _rad100thermal, _rad50thermal, _radCrater];
 
 if(_radCrater < 10) then {
 	_radCrater = 0;
@@ -58,28 +79,50 @@ if (_debug) then {
 	_mark20psi setMarkerSize [_rad20psi, _rad20psi];
 	_mark20psi setMarkerText "20 psi Airblast";
 	
-	
-	_markWaste = createMarker ["Nuclear Waste", _blastPos];
-	_markWaste setMarkerColor "ColorGreen";
-	_markWaste setMarkerBrush "FDiagonal";
-	_markWaste setMarkerShape "ELLIPSE";
-	_markWaste setMarkerSize [(_rad20psi + _rad5psi) / 2,(_rad20psi + _rad5psi) / 2];
-	_markWaste setMarkerText "Nuclear Waste";
+	if(! _airMode) then
+	{
+		_markWaste = createMarker ["Nuclear Waste", _blastPos];
+		_markWaste setMarkerColor "ColorGreen";
+		_markWaste setMarkerBrush "FDiagonal";
+		_markWaste setMarkerShape "ELLIPSE";
+		_markWaste setMarkerSize [(_rad20psi + _rad5psi) / 2,(_rad20psi + _rad5psi) / 2];
+		_markWaste setMarkerText "Nuclear Waste";
+	};
 	
 	
 };
 
-_radFireball = _radFireball * 0.4;
+_radFireball = _radFireball * 0.4; //about 115 * 0.4 = 46 at 2.5 kT
 
 //creates visual effects
-[[_blastPos, _radFireball],"freestyleNuke\flash.sqf"] remoteExec ["execVM",0];
-[[_blastPos, 0.7 * _radFireball,_rad5psi * 0.8,_rad5psi * 1.1],"freestyleNuke\mushroomcloud.sqf"] remoteExec ["execVM",0];
+[[_blastPos, _radFireball, _airMode],"freestyleNuke\flash.sqf"] remoteExec ["execVM",0];
+
+
+if(! _airMode) then 
+{
+	[[_blastPos, _radFireball,_rad5psi * 0.8,_rad5psi * 1.1],"freestyleNuke\mushroomcloud.sqf"] remoteExec ["execVM",0];
+};
+
+[[_blastPos, _rad1psi, _airMode],"freestyleNuke\blastwave.sqf"] remoteExec ["execVM",0];
+
+//[[_blastPos, 0.7 * _radFireball,_rad5psi * 0.8,_rad5psi * 1.1],"freestyleNuke\mushroomcloud.sqf"] remoteExec ["execVM",0];
 //[[_blastPos, 0.7 * _radFireball,_radFireball * 6,_radFireball * 8.5],"freestyleNuke\mushroomcloud.sqf"] remoteExec ["execVM",0]; //legacy function
-[[_blastPos, _rad1psi],"freestyleNuke\blastwave.sqf"] remoteExec ["execVM",0];
 
-[_blastPos, _y, _radFireball * 2] execVM "freestyleNuke\iniCondensationRings.sqf";
 
-[[_blastPos, _radFallout, 900],"freestyleNuke\falloutParticle.sqf"] remoteExec ["execVM",0];
+if (_radFireball > 46) then
+{
+	[_blastPos, _y, _radFireball * 2, _airMode] execVM "freestyleNuke\iniCondensationRings.sqf";
+}
+else
+{
+	[_blastPos, -1, _radFireball * 2, _airMode] execVM "freestyleNuke\iniCondensationRings.sqf";
+};
+
+
+if(! _airMode) then
+{
+	[[_blastPos, _radFallout, 900],"freestyleNuke\falloutParticle.sqf"] remoteExec ["execVM",0];
+};
 
 //create damaging effects
 if (_damage) then {
@@ -92,7 +135,10 @@ if (_damage) then {
 	_20psi = [_blastPos, _rad20psi, _radCrater + 10] execVM "freestyleNuke\airblast20psi.sqf";
 	waitUntil { scriptDone _20psi };
 	
-	_crater = [_blastPos, _radCrater] execVM "freestyleNuke\crater.sqf";
+	if(! _airMode) then 
+	{
+		_crater = [_blastPos, _radCrater] execVM "freestyleNuke\crater.sqf";	
+	};
 	
 	_5psi = [_blastPos, _rad5psi,_rad20psi] execVM "freestyleNuke\airblast5psi.sqf";
 	waitUntil { scriptDone _5psi };
@@ -103,7 +149,9 @@ if (_damage) then {
 
 	_jam = [_blastPos, _rad1psi] execVM "freestyleNuke\jamming.sqf";
 	
-	_waste = [_blastPos, _radFallout, 900, _uniforms, _goggles] execVM "freestyleNuke\nuclearWaste.sqf";
-	
+	if (! _airMode) then 
+	{
+		_waste = [_blastPos, _radFallout, 900, _uniforms, _goggles] execVM "freestyleNuke\nuclearWaste.sqf";
+	};
 }
 

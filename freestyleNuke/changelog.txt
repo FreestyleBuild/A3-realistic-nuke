@@ -1,5 +1,45 @@
 Changelog:
 
+Version 0.5.0:
+
+Small tweaks to effects, new explosion effects for low-yield blasts and experimental air mode.
+
+Low-Yield Effects:
+New visual effects for low-yield explosions. They don't create a mushroom cloud but a more messy smoke pillar. Also they can't create condensation rings anymore. This changes apply to explsoion below 2.5 kT.
+
+Air Mode:
+Controlled via optional 5. parameter when calling iniNuke.sqf, which can be either 0 (force normal mode), 1 (force Air Mode) or 2 (calculate mode using blast radius, this is the default setting).
+When Air Mode is activated visual effects are changed to immitate a nuclear high-altitude explosion by not creating a mushroomcloud, earthquake nor a crater nor fallout, but still a flash of light, condensations rings and some smoke effects.
+This mode DOES NOT calculate the effects of an air burst (I have no real idea on how to do this at the moment), it's meant to fix problems with the nuke's effects at high altitudes, to enable, for example, the creation of nuclear air-to-air missiles.
+
+Notes: During testing of for this update I verified the calculations made for the damage effects. Should you experience with those effects at large yields it is most likely due to Arma needing quite some time proccess the damage.
+
+Thanks to everyone who gave feedback on the script or the mod! You really help me improve my script!
+Special thanks to Steam user @Pancake, for his suggestions regarding the mushroomcloud effects, and @V. Berlioz for thoroughly testing the scipt and reporting his results!
+
+
+Changed/Fixed:
+
+- blastwave.sqf
+	- added a pressure wave effect
+	- added surport for Air Mode
+	
+- mushroomcloud.sqf
+	- changed diameter of stem
+	- added new effects for small yield explosion
+	
+- iniCondensationRings.sqf
+	- included option to not create condensation rings for low yield blasts
+	
+- flash.sqf
+	- added new effects for Air Mode
+	
+- iniNuke.sqf
+	- now has one additional parameter (optional) to activate Air Mode, false by default
+	- calls other scripts according to if Air Mode is enabled
+	- small change to support small yield effects
+
+
 
 Version 0.4.1:
 
@@ -12,7 +52,7 @@ Changed/Fixed:
 	- now properly affects all buildings
 
 - fireFX.sqf
-	- soudn randomization added/fixed
+	- sound randomization added/fixed
 
 
 
@@ -36,7 +76,7 @@ Changed/Fixed:
 	- will now hide objects close to the center to allow for the creation of the crater
 	
 - mushroomcloud.sqf
-	- small tweaks and fixes foe the effects
+	- small tweaks and fixes for the effects
 	
 - fireFX.sqf
 	- small changes to sound effects, shoudl now have for variations
@@ -119,7 +159,7 @@ New:
 	- you can negate the effect by wearing a CBRN suits and a breathing mask, thanks to user "the Cheshire" for the idea
 	
 - Added falloutParticle.sqf
-	- particle effects for the fallout effect and near the center of the blast, thanks to user "jushdrug" for the suggetsion
+	- particle effects for the fallout effect and near the center of the blast, thanks to user "jushdrug" for the suggestion
 	
 	
 Changed/Fixed:

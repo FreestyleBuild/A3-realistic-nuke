@@ -1,8 +1,9 @@
+//Changed in 0.5.0
 //Changed in 0.3.0
 //Changed in 0.2.0
 
 
-private["_wave", "_pos", "_obj","_radius", "_curRadius", "_abort"];
+private["_wave", "_pos", "_obj","_radius", "_curRadius", "_abort", "_airMode"];
 
 sleep 1;
 
@@ -10,6 +11,7 @@ if (!hasInterface) exitWith {};
 
 _pos = _this select 0;
 _radius = _this select 1;
+_airMode = _this select 2;
 
 _abort = false;
 
@@ -19,9 +21,22 @@ _obj = "Sign_Sphere10cm_F" createVehicleLocal _pos;
 
 if (isServer) then 
 {
-_obj setPos [getPos _obj select 0 ,getPos _obj select 1, 0]; 
+_obj setPos _pos;//[getPos _obj select 0 ,getPos _obj select 1, 0]; 
 _obj setVectorUp [0,0,1];
 };
+
+if(_airMode) exitWith
+{
+	//create pressurewave effect
+	drop [["\A3\data_f\ParticleEffects\Universal\Refract.p3d", 1, 0, 0], "", "Billboard", 1, _radius / 200, [0,0,0], [0,0,0], 0, 9.996,7.84, 0.2, [1, 2 * _radius], [[1,1,1,1],[1,1,1,1],[1,1,1,1]], [0.1], 1, 0, "", "", _obj, random(360)/(2 * pi), false, -1.0, [[1,1,1,1] ,[1,1,1,1]]];
+};
+
+
+//create pressurewave effect
+drop [["\A3\data_f\ParticleEffects\Universal\Refract.p3d", 1, 0, 0], "", "Billboard", 1, _radius / 200, [0,0,0], [0,0,0], 0, 9.996,7.84, 0.2, [1, 2 * _radius], [[1,1,1,1],[1,1,1,1],[1,1,1,1]], [0.1], 1, 0, "", "", _obj, random(360)/(2 * pi), false, -1.0, [[1,1,1,1] ,[1,1,1,1]]];
+
+
+
 _wave = "#particlesource" createVehicleLocal [0,0,0];
 _wave attachTo [_obj,[0,0,0]];
 

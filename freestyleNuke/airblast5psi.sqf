@@ -23,6 +23,12 @@ _allBuildings = nearestObjects [_blastPos ,["Building"], _radius5];
 _allVehicles = nearestObjects [_blastPos ,["Car", "LandVehicles", "Air", "Ship"], _radius5];
 _allUnits = nearestObjects [_blastPos ,["Man"], _radius5];
 
+
+
+{ _x hideObject true;} forEach _allTrees;
+
+private _maxB = count _allBuildings;
+
 //damage affected objects
 while{_curRadius5 <= _radius5} do {
 _h = (_radius5 - _curRadius5) / (_radius5 - _rad20psi);
@@ -32,11 +38,13 @@ _curDamage5 = -0.5 * ((-1 * _h + 1)  ^ 0.2) + 1;
 
 if (_curDamage5 > 1) then {_curDamage5 = 1;}; 
 
+private _c = 0;
 
+while {(((getPos (_allBuildings # _c)) distance _blastPos) < (_curRadius5 - 100)) && (_c < _maxB)} do {_c = _c + 1;};
 
-{ _x hideObject true;} forEach _allTrees;
-
+while {((((getPos (_allBuildings # _c)) distance _blastPos) - 40) <= _curRadius5) && (_c < _maxB)} do
 {
+	private _x = _allBuildings # _c;
 	_h = (getPos _x) distance _blastPos; 
 	if (_h > ((_curRadius5 - 40) max _rad20psi) && _h <= _curRadius5) then {
 		_x setDamage[(random 15) / 100 + _curDamage5 * 1.5 + damage _x, false];
@@ -44,7 +52,8 @@ if (_curDamage5 > 1) then {_curDamage5 = 1;};
 			[_x,2,300 + (random 60)] execVM "freestyleSimpleFire\iniFire.sqf"; //set buildings on fire (approx. 4% of all buildings affected)
 		};
 	};
-} forEach _allBuildings;
+	_c = _c + 1;
+};
 
 {
 _h = (getPos _x) distance _blastPos; 

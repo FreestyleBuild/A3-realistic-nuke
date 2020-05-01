@@ -23,6 +23,9 @@ _allBuildings = nearestObjects [_blastPos ,["Building"], _radius1];
 _allVehicles = nearestObjects [_blastPos ,["LandVehicles", "Air", "Ship"], _radius1];
 _allUnits = nearestObjects [_blastPos ,["Man"], _radius1];
 
+
+private _maxB = count _allBuildings;
+
 //damage objects 
 while{_curRadius1 <= _radius1} do {
 
@@ -37,12 +40,20 @@ if (_curDamage1 > 1) then {_curDamage1 = 1;};
 
 
 
+private _c = 0;
+
+
+while {(((getPos (_allBuildings # _c)) distance _blastPos) < (_curRadius1 - 80)) && (_c < _maxB)} do {_c = _c + 1;};
+
+while {((((getPos (_allBuildings # _c)) distance _blastPos) - 40) <= _curRadius1) && (_c < _maxB)} do
 {
-_h = (getPos _x) distance _blastPos; 
-if (_h > ((_curRadius1 - 40) max _rad5psi) && _h <= _curRadius1) then {
-	_x setDamage[_curDamage1 * 1.5 + damage _x, false]; 
+	private _x = _allBuildings # _c;
+	_h = (getPos _x) distance _blastPos; 
+	if (_h > ((_curRadius1 - 40) max _rad5psi) && _h <= _curRadius1) then {
+		_x setDamage[_curDamage1 * 1.5 + damage _x, false]; 
+	};
+	_c = _c + 1;
 };
-} forEach _allBuildings;
 
 {
 _h = (getPos _x) distance _blastPos; 

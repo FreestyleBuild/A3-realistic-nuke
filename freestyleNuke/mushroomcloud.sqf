@@ -1,3 +1,4 @@
+//Changed in 0.6.0
 //Changed in 0.5.0
 //Changed in 0.4.0
 //Changed in 0.3.0
@@ -43,9 +44,9 @@ if ((_radius / 1.5) <= 46) exitWith
 	};
 	
 	
-	for "_i" from 1 to 15 do
+	for "_i" from 1 to 20 do
 	{
-		_moves pushBack ((vectorNormalized [random(200) - 100, random(200) - 100, 150]));
+		_moves pushBack ((vectorNormalized [random(200) - 100, random(200) - 100, 120]));
 		_fragments pushBack ("Sign_Sphere10cm_F" createVehicleLocal _pos);
 	};
 	for "_i" from 1 to (floor(_cloudTop / 16)) do
@@ -68,6 +69,48 @@ if ((_radius / 1.5) <= 46) exitWith
 
 
 
+private _fragments = [];
+private _moves = [];
+
+for "_i" from 0 to 5 do 
+{
+	drop [["\A3\data_f\ParticleEffects\Universal\Universal_02.p3d",8,0,40,0], "", "Billboard", 1, _cloudLifetime, [0,0,0], [0,0,0], 0.1, 9.996,7.84, 0, [_radius * 5,_radius * 4.5], [_color,_colorTarget], [0.5,0.5], 1, 0.1, "", "", _obj, random(360)/(2 * pi), true, -1.0, [_color,_colorTarget]];
+};
+
+
+for "_i" from 1 to 20 do
+{
+	_moves pushBack ((vectorNormalized [random(200) - 100, random(200) - 100, 120]));
+	_fragments pushBack ("Sign_Sphere10cm_F" createVehicleLocal _pos);
+};
+for "_i" from 1 to (floor(_cloudTop / 32)) do
+{	
+	{
+		private _moveDir = [(_pos vectorDiff (getPos _x)) # 0, (_pos vectorDiff (getPos _x)) # 1, 0];
+		_moveDir = _moveDir vectorMultiply 0.85;
+		_moveDir = (vectorNormalized _moveDir) vectorMultiply ((vectorMagnitude _moveDir) / (((getPos _x) # 2) / _vSpeed + 0.1));
+		drop [["\A3\data_f\ParticleEffects\Universal\Universal_02.p3d",8,0,40,0], "", "Billboard", 1, ((getPos _x) # 2) / _vSpeed, [0,0,0], _moveDir, 0.1, 10,7.84, 0, [5 * _radius / _i + _radius * 0.5,5 * _radius / _i +  _radius * 0.5], [_color,_colorTarget], [0.2,0.2], 1, 0, "", "", _x, random(360)/(2 * pi), false, 1, [_color,_colorTarget]];
+	} forEach _fragments;
+	
+	for "_j" from 0 to (count _moves - 1) do
+	{
+		//{_moves set[_j , [0,0,0]];};
+		(_fragments # _j) setPos ((getPos (_fragments # _j)) vectorAdd ((_moves # _j) vectorMultiply ((5 * _radius / _i + _radius * 0.5)/ 2.5)));		
+	};
+	
+	private _c = 0;
+	{
+		if (((getPos _x) # 2) > _cloudTop) then {deleteVehicle _x; _fragments deleteAt _c; _moves deleteAt _c; _c = _c - 1;};
+		_c = _c + 1;
+	} forEach _fragments;
+	
+	sleep 0.01;
+};
+{
+	deleteVehicle _x;
+} forEach _fragments;
+
+
 
 
 _source = "#particlesource" createVehicleLocal [0,0,0]; //creates the stem of the mushroom
@@ -85,9 +128,10 @@ _cap setParticleCircle [_radius, [0,0,0]];
 
 
 _cap setParticleParams [["\A3\data_f\ParticleEffects\Universal\Universal_02.p3d",8,0,40,1], "", "Billboard", 1, _capLifetime, [0,0,0], [0,0,_vSpeed], 0.1, 9.996,7.84, 0, [_radius * 2,_radius * 2], [_color,_colorTarget], [0.2,0.2], 1, 0.1, "", "", _capObj, 0.0, false, -1.0, [_color,_colorTarget]];
+_cap setParticleRandom [0, [0, 0, 0], [0, 0, 0], 0, 0, [0, 0, 0, 0], 0, 0, 2 * pi];
 
 _source setParticleParams [["\A3\data_f\ParticleEffects\Universal\Universal_02.p3d",8,0,40,1], "", "Billboard", 1, _lifetime * 1.1, [0,0,0], [0,0,_vSpeed * 0.9], 0.1, 9.996,7.84, 0, [_radius * 2,_radius], [_color,_colorTarget], [0.2,0.2], 1, 0.1, "", "", _obj, 0.0, true, -1.0, [_color,_colorTarget]];
-
+_source setParticleRandom [0, [0, 0, 0], [0, 0, 0], 0, 0, [0, 0, 0, 0], 0, 0, 2 * pi];
 
 
 _source setDropInterval 0.4;

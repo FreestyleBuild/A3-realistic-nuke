@@ -1,4 +1,3 @@
-//Version 0.6.0
 //Version 0.5.0
 //Version 0.4.1
 //Version 0.4.0
@@ -43,12 +42,11 @@ if ((param[4, 2] == 2) && (((_rad5psi + _rad20psi) / 2) < (_blastPos # 2))) then
 
 
 //Debug output
-//hint formatText ["Fireball: %1 m %2 1 psi: %3 m %2 5 psi: %4 m %2 20 psi: %5 m %2 500 rem: %6 m %2 5000 rem: %7 m %2 100 Thermal: %8 m %2 50 Thermal: %9 m %2 Crater: %10 m %2", _radFireball, lineBreak, _rad1psi, _rad5psi, _rad20psi, _rad500rem, _rad5000rem, _rad100thermal, _rad50thermal, _radCrater];
+hint formatText ["Fireball: %1 m %2 1 psi: %3 m %2 5 psi: %4 m %2 20 psi: %5 m %2 500 rem: %6 m %2 5000 rem: %7 m %2 100 Thermal: %8 m %2 50 Thermal: %9 m %2 Crater: %10 m %2", _radFireball, lineBreak, _rad1psi, _rad5psi, _rad20psi, _rad500rem, _rad5000rem, _rad100thermal, _rad50thermal, _radCrater];
 
 if(_radCrater < 10) then {
 	_radCrater = 0;
 };
-
 
 _radFallout = (_rad20psi + _rad5psi) / 2;
 
@@ -121,7 +119,7 @@ else
 };
 
 
-if((! _airMode) && ((_radFireball / 0.4)  > (_blastPos # 2))) then
+if(! _airMode) then
 {
 	[[_blastPos, _radFallout, 900],"freestyleNuke\falloutParticle.sqf"] remoteExec ["execVM",0];
 };
@@ -134,29 +132,30 @@ if (_damage) then {
 	_50thermal = [_blastPos, _rad50thermal] execVM "freestyleNuke\thermal50.sqf";
 
 	
-	/*sleep 5;
-	private _start = diag_tickTime;*/
 	
-	_20psi = [_blastPos, _rad20psi, _radCrater + 10] execVM "freestyleNuke\airblast20psi.sqf";
+	sleep 5;
+	private _start = diag_tickTime;
+	
+	_20psi = [_blastPos, _rad20psi, _radCrater + 10] execVM "freestyleNuke\airblast20psi-050.sqf";
 	waitUntil { scriptDone _20psi };
-	
 	
 	if(! _airMode) then 
 	{
 		_crater = [_blastPos, _radCrater] execVM "freestyleNuke\crater.sqf";	
 	};
 	
-	_5psi = [_blastPos, _rad5psi,_rad20psi] execVM "freestyleNuke\airblast5psi.sqf";
+	_5psi = [_blastPos, _rad5psi,_rad20psi] execVM "freestyleNuke\airblast5psi-050.sqf";
 	waitUntil { scriptDone _5psi };
 
-	_1psi = [_blastPos, _rad1psi,_rad5psi] execVM "freestyleNuke\airblast1psi.sqf";
+	_1psi = [_blastPos, _rad1psi,_rad5psi] execVM "freestyleNuke\airblast1psi-050.sqf";
 	waitUntil { scriptDone _1psi };
 
-	//hint str(diag_tickTime - _start);
+	
+	hint str(diag_tickTime - _start);
 	
 	_jam = [_blastPos, _rad1psi] execVM "freestyleNuke\jamming.sqf";
 	
-	if ((! _airMode) && ((_radFireball / 0.4)  > (_blastPos # 2))) then 
+	if (! _airMode) then 
 	{
 		_waste = [_blastPos, _radFallout, 900, _uniforms, _goggles] execVM "freestyleNuke\nuclearWaste.sqf";
 	};

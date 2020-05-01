@@ -1,5 +1,43 @@
 Changelog:
 
+
+Version 0.6.0:
+
+Effects, small tweaks and performance improvement.
+
+Explosion effects for large yield explsosion have been revamped, they now start off like smaller explosion, but the particle then drift inwards to create the nuclear mushroom.
+The chemical detector from the Contact DLC now displayes a threat level when inside the radioactive zone of the fallout, the threat level corrospondent to the remaining time of the fallout effect.
+Additionally some calculations regarding the fallout have been changed as well as a single particle effect for the fireball, added expanding condensation rings and improved performance for the blast wave damage. 
+
+
+New:
+
+- added detector.sqf
+	- when using chemical detector and inside a radioactive zone displays a threat level
+	- threat level represents time left till radioation disappear, 10.0 is directly after the blast, 0.0 is when fallout is gone
+
+Changed/Fixed:
+
+- airblast20psi.sqf, aiblast5psi.sqf, airblast1psi.sqf
+	- improved performance while applying damage to buildings
+	- optimize objects being hidden for crater generation
+	
+- nuclearWaste.sqf
+	- now calls detector.sqf for the chemical detector effects
+
+- flash.sqf
+	- changed fireball to be single particle
+	
+- mushroomcloud.sqf
+	- changed effects for large yield explosion
+	
+- condensationRing.sqf
+	- condensation rings now expand
+	
+- iniNuke.sqf
+	- fallout now only occurs if detonation height is below fireball radius
+
+
 Version 0.5.0:
 
 Small tweaks to effects, new explosion effects for low-yield blasts and experimental air mode.
@@ -15,7 +53,7 @@ This mode DOES NOT calculate the effects of an air burst (I have no real idea on
 Notes: During testing of for this update I verified the calculations made for the damage effects. Should you experience with those effects at large yields it is most likely due to Arma needing quite some time proccess the damage.
 
 Thanks to everyone who gave feedback on the script or the mod! You really help me improve my script!
-Special thanks to Steam user @Pancake, for his suggestions regarding the mushroomcloud effects, and @V. Berlioz for thoroughly testing the scipt and reporting his results!
+Special thanks to Steam user @Pancake, for his suggestions regarding the mushroomcloud effects, and @V. Berlioz for thoroughly testing the script and reporting his results!
 
 
 Changed/Fixed:

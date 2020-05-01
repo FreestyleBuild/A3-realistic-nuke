@@ -1,9 +1,10 @@
+//Changed in 0.6.0
 //Changed in 0.5.0
 //Changed in 0.3.0
 //Changed in 0.2.0
 
 
-private["_light", "_pos", "_obj", "_brigthness","_radius", "_source", "_vSpeed"];
+private["_light", "_pos", "_obj", "_brigthness","_radius", "_vSpeed"];
 
 if (!hasInterface) exitWith {};
 
@@ -32,23 +33,10 @@ _light setLightDayLight true;
 _light setLightFlareMaxDistance 100000;
 
 
-_source = "#particlesource" createVehicleLocal [0,0,0];
-_source attachTo [_obj,[0,0,0]];
-
-
-
-_source setParticleParams [["\A3\data_f\ParticleEffects\Universal\Universal.p3d",16,2,16,0], "", "Billboard", 1, 1, [0,0,0], [0,0,0], 1.0, 1, 1, 1.0, [_radius,_radius], [[1,1,1,1],[1,0.4,0,1]], [1,1], 1, 0, "", "", _obj, 0.0, false, -1.0, [[1,1,1,1],[1,0.4,0,1]]];
-
-if(_airMode) then
-{
-	_source setParticleParams [["\A3\data_f\ParticleEffects\Universal\Universal.p3d",16,2,16,0], "", "Billboard", 1, 1, [0,0,0], [0,0,0], 1.0, 1, 1, 1.0, [_radius * 2,_radius * 2], [[1,1,1,1],[1,0.4,0,1]], [1,1], 1, 0, "", "", _obj, 0.0, false, -1.0, [[1,1,1,1],[1,0.4,0,1]]];	
-};
-
-
-
-
-_source setDropInterval 0.1;
-
+//create fireball
+//drop [["\a3\structures_f_heli\vr\helpers\sign_sphere200cm_f.p3d",16,12,8,0], "", "SpaceObject", 1, 10, [0,0,0], [0,0,0], 10.0, 1, 1, 1.0, [_radius * 0.2,_radius * 2, _radius * 2, _radius * 2, _radius * 2, _radius * 2, _radius * 2, _radius * 2, _radius * 2, _radius * 2, _radius * 2, _radius * 2, _radius * 2, _radius * 2, _radius * 2, _radius * 2, _radius * 0.2], [[1,1,1,1],[1,0.4,0,1]], [1,1], 1, 0, "", "", _obj, 0.0, false, -1.0, [[1,1,1,1],[1,0.4,0,1]]];	
+if (_airMode) then {_radius = _radius * 2;};
+drop [["\A3\data_f\ParticleEffects\Universal\Universal.p3d",16,2,16,0], "", "Billboard", 1, 10, [0,0,0], [0,0,0], 1.0, 1, 1, 1.0, [_radius * 0.2,_radius * 2, _radius * 2, _radius * 2, _radius * 2, _radius * 2, _radius * 2, _radius * 2, _radius * 2, _radius * 2, _radius * 2, _radius * 2, _radius * 2, _radius * 2, _radius * 2, _radius * 2, _radius * 0.2], [[1,1,1,1],[1,0.4,0,1]], [1,1], 1, 0, "", "", _obj, 0.0, false, -1.0, [[1,1,1,1],[1,0.4,0,1]]];	
 
 
 //create initial flash
@@ -99,7 +87,6 @@ while {((getPosATL _obj) select 2) < _radius * 2} do
 	sleep 0.1;
 };
 
-deleteVehicle _source;
 
 while{_brigthness > 0} do 
 {

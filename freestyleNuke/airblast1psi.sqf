@@ -1,3 +1,4 @@
+//Changed in 0.6.0
 //Changed in 0.3.0
 //Changed in 0.2.1
 //Changed in 0.2.0

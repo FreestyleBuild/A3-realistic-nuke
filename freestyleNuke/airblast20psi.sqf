@@ -1,3 +1,4 @@
+//Chnaged in 0.7.0
 //Changed in 0.6.0
 //Changed in 0.4.1
 //Changed in 0.4.0
@@ -15,6 +16,12 @@ _blastPos = _this select 0;
 _radius20 = _this select 1;
 _hideRadius = _this select 2;
 _curRadius20 = 40;
+_ace = param[3, false];
+
+
+
+_damageScript = "freestyleNuke\crater.sqf";
+if(_ace) then {_damageScript = "freestyleNuke\aceDamage.sqf"};
 
 
 if (_curRadius20 > _radius20) then {_curRadius20 = _radius20;};
@@ -82,7 +89,33 @@ while {((((getPos (_allBuildings # _c)) distance _blastPos) - 40) <= _curRadius2
 			sleep 0.5;
 			(_this select 0) setVectorDirAndUp [vectorDir (_this select 0),(_this select 1)];
 		};
-		_x setDamage[1, false]; 
+		
+		if(_x isKindOf "Man") then 
+		{
+			if (_ace) then 
+			{
+				[_x, 30, "explosive"] execVM _damageScript;
+			}
+			else 
+			{
+				_x setDamage[1, false];
+			};
+		}
+		else
+		{
+			_x setDamage[1, false];
+
+			{
+				if (_ace) then 
+				{
+					[_x, 30, "explosive"] execVM _damageScript;
+				}
+				else 
+				{
+					_x setDamage[1, false];
+				};
+			} forEach crew _x;	
+		};
 	};
 } forEach _allVehicles;
 

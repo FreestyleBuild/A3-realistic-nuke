@@ -1,5 +1,30 @@
 Changelog:
 
+Version 0.7.0:
+
+Ace Medical Compatability and small CRBN change.
+
+All damage effects are now compatible with Ace Medical, the script detects automaticaly if Ace Medical is loaded and applies damage accordingly. Additionally all Uniform and Goggles with CRBN in their classnames act as CRBN suits.
+
+New:
+
+- added aceDamage.sqf
+	- used to apply a certain amount and type of Ace Medical Damage randomly on a units
+	- used for ace compatability
+	
+Changed/Fixed:
+
+- airblast1psi.sqf, airblast5psi.sqf, airblast20psi.sqf, nuclearWaste.sqf, radioation500rem.sqf, radioation5000rem.sqf, thermal50.sqf, thermal100.sqf, iniFire.sqf
+	- new optional argument for usage of Ace, defaul is false
+	- if enabled damage is applied via aceDamage.sqf
+	
+- nuclearWaste.sqf
+	- now accepts uniform with "CBRN"/"cbrn" and goggles with "CBRN"/"cbrn" or "respirator" as protective equipment
+
+- iniNuke.sqf
+	- now detects wether Ace Medical is loaded or not, if it is Ace Medical Damage is applied by all damage effects
+
+
 
 Version 0.6.0:
 

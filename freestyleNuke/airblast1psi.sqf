@@ -1,3 +1,4 @@
+//Changed in 0.7.0
 //Changed in 0.6.0
 //Changed in 0.3.0
 //Changed in 0.2.1
@@ -5,16 +6,17 @@
 //Changed in 0.1.1
 
 
-private ["_blastPos","_radius1", "_rad5psi","_allBuildings", "_allTrees", "_allVehicles", "_allUnits"];
+private ["_blastPos","_radius1", "_rad5psi","_allBuildings", "_allTrees", "_allVehicles", "_allUnits", "_ace"];
 private ["_curRadius1", "_h", "_curDamage1", "_abort"];
 
 _blastPos = _this select 0;
 _radius1 = _this select 1;
 _rad5psi = _this select 2;
 _curRadius1 = 40 + _rad5psi;
+_ace = param[3, false];
 
-
-
+_damageScript = "freestyleNuke\crater.sqf";
+if(_ace) then {_damageScript = "freestyleNuke\aceDamage.sqf"};
 
 if (_curRadius1 > _radius1) then {_curRadius1 = _radius1;};
 _abort = false;
@@ -65,7 +67,28 @@ if (_h > ((_curRadius1 - 40) max _rad5psi) && _h <= _curRadius1) then {_x setDam
 _h = (getPos _x) distance _blastPos; 
 if (_h > ((_curRadius1 - 40) max _rad5psi) && _h <= _curRadius1 && isDamageAllowed _x) then 
 {
-	if (stance _x == "PRONE") then {_x setDamage[(_curDamage1 / 1.5) + damage _x, true];} else {_x setDamage[_curDamage1 + damage _x, true];}; 
+	if (stance _x == "PRONE") then {
+		if (_ace) then 
+			{
+				[_x, _curDamage1 / 1.7, "explosive"] execVM _damageScript;
+			}
+			else 
+			{
+				_x setDamage[(_curDamage1 / 1.5) + damage _x, true];
+			};		
+	} 
+	else 
+	{
+		if (_ace) then 
+		{
+			_null = [_x, _curDamage1 * 0.9, "explosive"] execVM _damageScript;
+		}
+		else 
+		{
+			_x setDamage[_curDamage1 + damage _x, true];
+		};
+		
+	}; 
 };
 } forEach _allUnits;
 

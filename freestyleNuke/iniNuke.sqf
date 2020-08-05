@@ -1,3 +1,4 @@
+//Version 0.7.0
 //Version 0.6.0
 //Version 0.5.0
 //Version 0.4.1
@@ -13,9 +14,9 @@ _y = _this select 1;
 _debug = _this select 2;
 _damage = _this select 3;
 //_airMode = param[4, false];
+_aceActivated = false;
 
-
-
+if(isClass(configFile >> "CfgPatches" >> "ace_medical")) then { _aceActivated = true;};
 
 //calculate relevant data
 _radFireball = (_y ^ 0.39991) * 79.30731 - 0.33774;
@@ -128,28 +129,28 @@ if((! _airMode) && ((_radFireball / 0.4)  > (_blastPos # 2))) then
 
 //create damaging effects
 if (_damage) then {
-	_5000rem = [_blastPos, _rad5000rem] execVM "freestyleNuke\radioation5000rem.sqf";
-	_500rem = [_blastPos, _rad500rem] execVM "freestyleNuke\radioation5000rem.sqf";
-	_100thermal = [_blastPos, _rad100thermal] execVM "freestyleNuke\thermal100.sqf";
-	_50thermal = [_blastPos, _rad50thermal] execVM "freestyleNuke\thermal50.sqf";
+	_5000rem = [_blastPos, _rad5000rem, _aceActivated] execVM "freestyleNuke\radioation5000rem.sqf";
+	_500rem = [_blastPos, _rad500rem, _aceActivated] execVM "freestyleNuke\radioation5000rem.sqf";
+	_100thermal = [_blastPos, _rad100thermal, _aceActivated] execVM "freestyleNuke\thermal100.sqf";
+	_50thermal = [_blastPos, _rad50thermal, _aceActivated] execVM "freestyleNuke\thermal50.sqf";
 
 	
 	/*sleep 5;
 	private _start = diag_tickTime;*/
 	
-	_20psi = [_blastPos, _rad20psi, _radCrater + 10] execVM "freestyleNuke\airblast20psi.sqf";
+	_20psi = [_blastPos, _rad20psi, _radCrater + 10, _aceActivated] execVM "freestyleNuke\airblast20psi.sqf";
 	waitUntil { scriptDone _20psi };
 	
 	
 	if(! _airMode) then 
 	{
-		_crater = [_blastPos, _radCrater] execVM "freestyleNuke\crater.sqf";	
+		_crater = [_blastPos, _radCrater, _aceActivated] execVM "freestyleNuke\crater.sqf";	
 	};
 	
-	_5psi = [_blastPos, _rad5psi,_rad20psi] execVM "freestyleNuke\airblast5psi.sqf";
+	_5psi = [_blastPos, _rad5psi,_rad20psi, _aceActivated] execVM "freestyleNuke\airblast5psi.sqf";
 	waitUntil { scriptDone _5psi };
 
-	_1psi = [_blastPos, _rad1psi,_rad5psi] execVM "freestyleNuke\airblast1psi.sqf";
+	_1psi = [_blastPos, _rad1psi,_rad5psi, _aceActivated] execVM "freestyleNuke\airblast1psi.sqf";
 	waitUntil { scriptDone _1psi };
 
 	//hint str(diag_tickTime - _start);
@@ -158,7 +159,7 @@ if (_damage) then {
 	
 	if ((! _airMode) && ((_radFireball / 0.4)  > (_blastPos # 2))) then 
 	{
-		_waste = [_blastPos, _radFallout, 900, _uniforms, _goggles] execVM "freestyleNuke\nuclearWaste.sqf";
+		_waste = [_blastPos, _radFallout, 900, _uniforms, _goggles, _aceActivated] execVM "freestyleNuke\nuclearWaste.sqf";
 	};
 }
 

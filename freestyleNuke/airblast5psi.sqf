@@ -1,3 +1,4 @@
+//Changed in 0.7.0
 //Changed in 0.6.0
 //Changed in 0.3.0
 //Changed in 0.2.1
@@ -13,6 +14,11 @@ _blastPos = _this select 0;
 _radius5 = _this select 1;
 _rad20psi = _this select 2;
 _curRadius5 = 40 + _rad20psi;
+_ace = param[3, false];
+
+
+_damageScript = "freestyleNuke\crater.sqf";
+if(_ace) then {_damageScript = "freestyleNuke\aceDamage.sqf"};
 
 
 if (_curRadius5 > _radius5) then {_curRadius5 = _radius5;};
@@ -50,7 +56,7 @@ while {((((getPos (_allBuildings # _c)) distance _blastPos) - 40) <= _curRadius5
 	if (_h > ((_curRadius5 - 40) max _rad20psi) && _h <= _curRadius5) then {
 		_x setDamage[(random 15) / 100 + _curDamage5 * 1.5 + damage _x, false];
 		if ((random 100) < 5 && (_x isKindOf "House")) then{
-			[_x,2,300 + (random 60)] execVM "freestyleSimpleFire\iniFire.sqf"; //set buildings on fire (approx. 4% of all buildings affected)
+			[_x,2,300 + (random 60), _ace] execVM "freestyleSimpleFire\iniFire.sqf"; //set buildings on fire (approx. 4% of all buildings affected)
 		};
 	};
 	_c = _c + 1;
@@ -89,7 +95,15 @@ if (_h > ((_curRadius5 - 40) max _rad20psi) && _h <= _curRadius5 && isDamageAllo
 
 	if (stance _x == "PRONE") then
 	{
-		_x setDamage[_curDamage5 * 1.5 + damage _x, true];
+		if (_ace) then 
+			{
+				[_x, _curDamage5 * 1.2, "explosive"] execVM _damageScript;
+			}
+			else 
+			{
+				_x setDamage[_curDamage5 * 1.5 + damage _x, true];
+			};	
+		
 	}
 	else
 	{
@@ -108,7 +122,18 @@ if (_h > ((_curRadius5 - 40) max _rad20psi) && _h <= _curRadius5 && isDamageAllo
 			_this switchMove "amovppnemstpsnonwnondnon";
 			sleep 1.5;
 			_this allowDamage true;};
-			_x setDamage[(random 30) / 100 + _curDamage5 * 1.5 + damage _x, true];	
+			
+			
+			if (_ace) then 
+			{
+				[_x, (random 30) / 100 + _curDamage5 * 1.2, "explosive"] execVM _damageScript;
+			}
+			else 
+			{
+				_x setDamage[(random 30) / 100 + _curDamage5 * 1.5 + damage _x, true];
+			};
+			
+				
 		};
 	};
 } forEach _allUnits;
